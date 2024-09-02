@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}News Blog{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-100">
@@ -13,11 +14,28 @@
         <nav class="container mx-auto px-6 py-3">
             <ul class="flex space-x-4">
                 <li><a href="{{ url_for('main.index') }}" class="hover:text-blue-200">Home</a></li>
-                <li><a href="{{ url_for('main.create_post') }}" class="hover:text-blue-200">Create Post</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('post.create_post') }}" class="hover:text-blue-200">Create Post</a></li>
+                <li><a href="{{ url_for('user.profile') }}" class="hover:text-blue-200">Profile</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="hover:text-blue-200">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login_google') }}" class="hover:text-blue-200">Login with Google</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('tag.tags') }}" class="hover:text-blue-200">Tags</a></li>
             </ul>
         </nav>
     </header>
     <main class="container mx-auto px-6 py-8 flex-grow">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="bg-{{ category }}-100 border border-{{ category }}-400 text-{{ category }}-700 px-4 py-3 rounded relative"
+            role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </main>
     <footer class="bg-blue-600 text-white py-4">
