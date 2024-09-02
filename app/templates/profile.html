@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">User Profile</h1>
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <form method="POST" action="{{ url_for('user.update_profile') }}">
+        <form method="POST">
             {{ form.hidden_tag() }}
             <div class="mb-4">
                 {{ form.username.label(class="block text-gray-700 text-sm font-bold mb-2") }}
@@ -19,11 +19,8 @@
                 focus:outline-none focus:shadow-outline") }}
             </div>
             <div class="flex items-center justify-between">
-                <button
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="submit">
-                    Update Profile
-                </button>
+                {{ form.submit(class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                focus:outline-none focus:shadow-outline") }}
             </div>
         </form>
     </div>

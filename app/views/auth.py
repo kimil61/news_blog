@@ -7,12 +7,13 @@ from app.models.user import User
 from oauthlib.oauth2 import WebApplicationClient
 import requests
 import json
+import os
 
 bp = Blueprint('auth', __name__)
 
 # Google OAuth 설정
-GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
-GOOGLE_CLIENT_SECRET = "YOUR_GOOGLE_CLIENT_SECRET"
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)

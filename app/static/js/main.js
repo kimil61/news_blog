@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const tagInput = document.getElementById('tag-input');
     const tagSuggestions = document.getElementById('tag-suggestions');
     const selectedTags = document.getElementById('selected-tags');
+    const form = document.querySelector('form');
 
     if (tagInput) {
         tagInput.addEventListener('input', debounce(function () {
@@ -52,5 +53,15 @@ document.addEventListener('DOMContentLoaded', function () {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            const tagInput = document.createElement('input');
+            tagInput.type = 'hidden';
+            tagInput.name = 'tags';
+            tagInput.value = Array.from(selectedTags.children).map(span => span.textContent.slice(0, -1)).join(',');
+            this.appendChild(tagInput);
+        });
     }
 });

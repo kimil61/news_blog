@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from config import Config
 from flask_wtf.csrf import CSRFProtect
 from flask_caching import Cache
+from dotenv import load_dotenv
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -15,6 +16,13 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 csrf = CSRFProtect()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
+
+# .env 파일 로드
+load_dotenv()
+
+## 개발환경에서만, 구글 로그인을 위한 설정. https 를 적용하면 이거 삭제해야 함.
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
 
 def create_app():
     app = Flask(__name__)
