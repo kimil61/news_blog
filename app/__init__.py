@@ -1,4 +1,3 @@
-#/app/__init__.py
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -10,6 +9,11 @@ from config import Config
 from flask_wtf.csrf import CSRFProtect
 from flask_caching import Cache
 from dotenv import load_dotenv
+import pymysql
+
+# .env 파일 로드
+load_dotenv()
+pymysql.install_as_MySQLdb()
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -18,16 +22,15 @@ login_manager.login_view = 'auth.login'
 csrf = CSRFProtect()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
-# .env 파일 로드
-load_dotenv()
-
 ## 개발환경에서만, 구글 로그인을 위한 설정. https 를 적용하면 이거 삭제해야 함.
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+
+    # Config 클래스 초기화 및 적용
+    Config.init_app(app)
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -35,8 +38,7 @@ def create_app():
     csrf.init_app(app)
     cache.init_app(app)
 
-    from app.views import auth, user, post, tag ,errors,comment
-    # app.register_blueprint(main.bp)
+    from app.views import auth, user, post, tag, errors, comment
     app.register_blueprint(auth.bp)
     app.register_blueprint(user.bp)
     app.register_blueprint(post.bp)

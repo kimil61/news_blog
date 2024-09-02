@@ -18,6 +18,9 @@
                     <li><a href="{{ url_for('post.index') }}" class="hover:text-blue-200">Home</a></li>
                     <li><a href="{{ url_for('post.index') }}" class="hover:text-blue-200">Posts</a></li>
                     <li><a href="{{ url_for('tag.tags') }}" class="hover:text-blue-200">Tags</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('post.create_post') }}" class="hover:text-blue-200">Create New Post</a></li>
+                    {% endif %}
                 </ul>
                 <ul class="flex space-x-4">
                     {% if current_user.is_authenticated %}
