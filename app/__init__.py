@@ -35,13 +35,14 @@ def create_app():
     csrf.init_app(app)
     cache.init_app(app)
 
-    from app.views import auth, user, post, tag ,errors
+    from app.views import auth, user, post, tag ,errors,comment
     # app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(user.bp)
     app.register_blueprint(post.bp)
     app.register_blueprint(tag.bp)
     app.register_blueprint(errors.bp)
+    app.register_blueprint(comment.bp)
 
     if not app.debug and not app.testing:
         if not os.path.exists('logs'):

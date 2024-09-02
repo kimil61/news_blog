@@ -8,23 +8,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block styles %}{% endblock %}
-
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-100">
     <header class="bg-blue-600 text-white shadow-md">
         <nav class="container mx-auto px-6 py-3">
-            <ul class="flex space-x-4">
-                <li><a href="{{ url_for('post.index') }}" class="hover:text-blue-200">Home</a></li>
-                {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('post.create_post') }}" class="hover:text-blue-200">Create Post</a></li>
-                <li><a href="{{ url_for('user.profile') }}" class="hover:text-blue-200">Profile</a></li>
-                <li><a href="{{ url_for('auth.logout') }}" class="hover:text-blue-200">Logout</a></li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login_google') }}" class="hover:text-blue-200">Login with Google</a></li>
-                {% endif %}
-                <li><a href="{{ url_for('tag.tags') }}" class="hover:text-blue-200">Tags</a></li>
-            </ul>
+            <div class="flex justify-between items-center">
+                <ul class="flex space-x-4">
+                    <li><a href="{{ url_for('post.index') }}" class="hover:text-blue-200">Home</a></li>
+                    <li><a href="{{ url_for('post.index') }}" class="hover:text-blue-200">Posts</a></li>
+                    <li><a href="{{ url_for('tag.tags') }}" class="hover:text-blue-200">Tags</a></li>
+                </ul>
+                <ul class="flex space-x-4">
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('user.profile') }}" class="hover:text-blue-200">Profile</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}" class="hover:text-blue-200">Logout</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.login_google') }}" class="hover:text-blue-200">Login with Google</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </nav>
     </header>
     <main class="container mx-auto px-6 py-8 flex-grow">
@@ -46,7 +49,6 @@
         </div>
     </footer>
     {% block scripts %}{% endblock %}
-
 </body>
 
 </html>

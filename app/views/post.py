@@ -5,6 +5,7 @@ from app import db
 from app.models.post import Post
 from app.models.tag import Tag
 from app.forms.post_form import PostForm
+from app.forms.comment_form import CommentForm
 from sqlalchemy.exc import SQLAlchemyError
 from markdown2 import Markdown
 
@@ -24,7 +25,8 @@ def index():
 def post(id):
     post = Post.query.get_or_404(id)
     post.content = markdowner.convert(post.content)
-    return render_template('post.html', post=post)
+    form = CommentForm()
+    return render_template('post.html', post=post, form=form)
 
 @bp.route('/post/new', methods=['GET', 'POST'])
 @login_required

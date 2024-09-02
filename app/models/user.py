@@ -1,4 +1,5 @@
-from app import db,login_manager
+# app/models/user.py
+from app import db, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -10,7 +11,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic', cascade='all, delete-orphan')
+    comments = db.relationship('Comment', back_populates='user', lazy='dynamic', cascade='all, delete-orphan')
 
     def set_password(self, password):
         if not self.is_password_complex(password):
