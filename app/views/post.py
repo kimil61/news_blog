@@ -20,27 +20,27 @@ def post(id):
     post = Post.query.get_or_404(id)
     return render_template('post.html', post=post)
 
+
 @bp.route('/post/new', methods=['GET', 'POST'])
 @login_required
 def create_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)
-        
+
         # 태그 처리
-        tag_names = request.form.get('tags', '').split(',')
+        tag_names = [Tag.clean_tag_name(tag) for tag in form.tags.data.split(',') if tag.strip()]
         for tag_name in tag_names:
-            tag_name = tag_name.strip()
-            if tag_name:
-                tag = Tag.query.filter_by(name=tag_name).first()
-                if not tag:
-                    tag = Tag(name=tag_name)
-                post.tags.append(tag)
-        
+            tag = Tag.query.filter_by(name=tag_name).first()
+            if not tag:
+                tag = Tag(name=tag_name)
+                db.session.add(tag)
+            post.tags.append(tag)
+
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
-        return redirect(url_for('post.index'))
+        return redirect(url_for('main.index'))
     return render_template('create_post.html', form=form)
 
 

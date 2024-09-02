@@ -10,5 +10,14 @@ class Tag(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     posts = db.relationship('Post', secondary=post_tags, backref=db.backref('tags', lazy='dynamic'))
 
+    @staticmethod
+    def clean_tag_name(name):
+        return name.strip().lower().replace('#', '')
+
+    def __init__(self, *args, **kwargs):
+        if 'name' in kwargs:
+            kwargs['name'] = self.clean_tag_name(kwargs['name'])
+        super(Tag, self).__init__(*args, **kwargs)
+
     def __repr__(self):
         return f'<Tag {self.name}>'

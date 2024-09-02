@@ -16,6 +16,10 @@ GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 
+print(GOOGLE_CLIENT_ID)
+print(GOOGLE_CLIENT_SECRET)
+
+
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 def get_google_provider_cfg():
