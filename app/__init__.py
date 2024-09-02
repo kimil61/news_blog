@@ -35,7 +35,7 @@ def create_app():
     csrf.init_app(app)
     cache.init_app(app)
 
-    from app.views import main, auth, user, post, tag ,errors
+    from app.views import auth, user, post, tag ,errors
     # app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(user.bp)

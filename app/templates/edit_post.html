@@ -2,9 +2,13 @@
 
 {% block title %}Edit Post{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock %}
+
 {% block content %}
 <h1 class="text-3xl font-bold mb-6">Edit Post</h1>
-<form method="POST" class="bg-white shadow-md rounded-lg p-6">
+<form method="POST" class="bg-white shadow-md rounded-lg p-6" id="post-form">
     {{ form.hidden_tag() }}
     <div class="mb-4">
         {{ form.title.label(class="block text-gray-700 text-sm font-bold mb-2") }}
@@ -12,7 +16,7 @@
     </div>
     <div class="mb-4">
         {{ form.content.label(class="block text-gray-700 text-sm font-bold mb-2") }}
-        {{ form.content(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", rows="10") }}
+        {{ form.content(id="simplemde", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
     </div>
     <div class="mb-4">
         {{ form.tags.label(class="block text-gray-700 text-sm font-bold mb-2") }}
@@ -21,16 +25,25 @@
         <div id="selected-tags" class="mt-2"></div>
     </div>
     <div class="flex items-center justify-between">
-        {{ form.submit(class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline", value="Update Post") }}
+        <button type="button" id="submit-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Update Post
+        </button>
     </div>
 </form>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const simplemde = new SimpleMDE({ element: document.getElementById("simplemde") });
+        const form = document.getElementById('post-form');
         const tagInput = document.getElementById('tag-input');
         const selectedTags = document.getElementById('selected-tags');
+        const submitButton = document.getElementById('submit-button');
+
+        // Remove the 'required' attribute from the textarea
+        document.getElementById('simplemde').removeAttribute('required');
 
         function updateSelectedTags() {
             const tags = tagInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
@@ -47,6 +60,25 @@
 
         // 초기 태그 표시
         updateSelectedTags();
+
+        submitButton.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent the default button behavior
+
+            // Get the SimpleMDE content
+            const content = simplemde.value();
+
+            // Validate the content
+            if (content.trim() === '') {
+                alert('Please enter some content for your post.');
+                return;
+            }
+
+            // Update the hidden textarea with the SimpleMDE content
+            document.getElementById('simplemde').value = content;
+
+            // If everything is valid, submit the form
+            form.submit();
+        });
     });
 </script>
 {% endblock %}

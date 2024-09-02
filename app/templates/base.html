@@ -7,6 +7,8 @@
     <title>{% block title %}News Blog{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block styles %}{% endblock %}
+
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-100">
@@ -43,6 +45,8 @@
             <p>&copy; 2024 News Blog</p>
         </div>
     </footer>
+    {% block scripts %}{% endblock %}
+
 </body>
 
 </html>

@@ -6,6 +6,9 @@ from app.models.post import Post
 from app.models.tag import Tag
 from app.forms.post_form import PostForm
 from sqlalchemy.exc import SQLAlchemyError
+from markdown2 import Markdown
+
+markdowner = Markdown()
 
 bp = Blueprint('post', __name__)
 
@@ -20,6 +23,7 @@ def index():
 @bp.route('/post/<int:id>')
 def post(id):
     post = Post.query.get_or_404(id)
+    post.content = markdowner.convert(post.content)
     return render_template('post.html', post=post)
 
 @bp.route('/post/new', methods=['GET', 'POST'])
