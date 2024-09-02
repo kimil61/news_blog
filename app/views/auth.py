@@ -59,15 +59,15 @@ def login_google_callback():
     userinfo_response = requests.get(uri, headers=headers, data=body)
 
     if userinfo_response.json().get("email_verified"):
-        unique_id = userinfo_response.json()["sub"]
+        sub = userinfo_response.json()["sub"]
         users_email = userinfo_response.json()["email"]
-        users_name = userinfo_response.json()["given_name"]
+        name = userinfo_response.json()["name"]
     else:
         return "User email not available or not verified by Google.", 400
 
     user = User.query.filter_by(email=users_email).first()
     if not user:
-        user = User(username=users_name, email=users_email)
+        user = User(unique_id=sub,username=name,name=name, email=users_email)
         db.session.add(user)
         db.session.commit()
 
