@@ -13,6 +13,12 @@ def tags():
     tags = Tag.query.all()
     return render_template('tags.html', tags=tags)
 
+@bp.route('/tag/<string:tag_name>')
+def tag_posts(tag_name):
+    tag = Tag.query.filter_by(name=tag_name).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter(Post.tags.any(id=tag.id)).order_by(Post.created_at.desc()).paginate(page=page, per_page=10)
+    return render_template('tag_posts.html', tag=tag, posts=posts)
 
 @bp.route('/tag/create', methods=['POST'])
 @login_required

@@ -13,7 +13,7 @@
     <header class="bg-blue-600 text-white shadow-md">
         <nav class="container mx-auto px-6 py-3">
             <ul class="flex space-x-4">
-                <li><a href="{{ url_for('main.index') }}" class="hover:text-blue-200">Home</a></li>
+                <li><a href="{{ url_for('post.index') }}" class="hover:text-blue-200">Home</a></li>
                 {% if current_user.is_authenticated %}
                 <li><a href="{{ url_for('post.create_post') }}" class="hover:text-blue-200">Create Post</a></li>
                 <li><a href="{{ url_for('user.profile') }}" class="hover:text-blue-200">Profile</a></li>

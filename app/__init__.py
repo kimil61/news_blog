@@ -1,3 +1,4 @@
+#/app/__init__.py
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -35,7 +36,7 @@ def create_app():
     cache.init_app(app)
 
     from app.views import main, auth, user, post, tag ,errors
-    app.register_blueprint(main.bp)
+    # app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(user.bp)
     app.register_blueprint(post.bp)
