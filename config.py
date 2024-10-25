@@ -1,9 +1,9 @@
-import os
+import os ,utils
 
 
 class Config:
     WTF_CSRF_ENABLED = True
-    SECRET_KEY = 'you-will-never-guess-aha'
+    SECRET_KEY = utils.generate_secret_key()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @classmethod
